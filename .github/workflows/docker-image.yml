@@ -28,5 +28,9 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Convert IMAGE_NAME to lowercase
+      id: lowercase
+      run: echo "IMAGE_NAME=$(echo ${{ env.IMAGE_NAME }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
     - name: Build and Push
       run: docker buildx build -t "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" --push -f Dockerfile .
