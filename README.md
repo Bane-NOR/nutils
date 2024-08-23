@@ -1,3 +1,3 @@
 # BN-Apps nutils Image
 Network Utilities public image
-![Image Build](https://github.com/bn-apps/nutils/actions/workflows/docker-image.yml/badge.svg)
+[![Network Tools](https://github.com/Bane-NOR/nutils/actions/workflows/docker-image.yml/badge.svg)](https://github.com/Bane-NOR/nutils/actions/workflows/docker-image.yml)
