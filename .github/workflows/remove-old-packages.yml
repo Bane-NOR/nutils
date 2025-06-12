@@ -4,8 +4,7 @@ on:
   push:
     branches: ["feat/delete-old-packages"]
 
-permissions: 
-  packages: write
+permissions: write-all
 
 jobs:
   find-and-delete-old-packages:
