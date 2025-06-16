@@ -37,25 +37,25 @@ jobs:
             REPO_NAME: ${{ env.REPO_NAME }}
           run: |
             DATE_90_DAYS_AGO=$(date -d '-90 days' '+%Y-%m-%dT%H:%M:%SZ')
-            curl -L \
+            PACKAGE_IDS=$(curl -L \
               -H "Accept: application/vnd.github+json" \
               -H "Authorization: Bearer ${{ env.GH_TOKEN }}" \
               -H "X-GitHub-Api-Version: 2022-11-28" \
               https://api.github.com/orgs/Bane-NOR/packages/container/${{ env.REPO_NAME }}/versions \
-            | jq -r ".[] | select(.created_at < \"$DATE_90_DAYS_AGO\") | .id" \
-            | xargs -r -I {} echo "PACKAGE_ID={}" >> $GITHUB_ENV
-    
+            | jq -r ".[] | select(.created_at < \"$DATE_90_DAYS_AGO\") | .id" | xargs)
+            echo "PACKAGE_IDS=${PACKAGE_IDS}" >> $GITHUB_ENV
+
         - name: Delete old packages
-          if: env.PACKAGE_ID != ''
+          if: env.PACKAGE_IDS != ''
           env:
             GH_TOKEN: ${{ steps.generate-token.outputs.token }}
             REPO_NAME: ${{ env.REPO_NAME }}
           run: |
-            for PACKAGE_ID in ${{ env.PACKAGE_ID }}; do
+            for PACKAGE_ID in $PACKAGE_IDS; do
               echo "Deleting package with ID: $PACKAGE_ID"
               # curl -X DELETE \
               # -H "Accept: application/vnd.github+json" \
               # -H "Authorization: Bearer ${{ env.GH_TOKEN }}" \
               # -H "X-GitHub-Api-Version: 2022-11-28" \
-              # https://api.github.com/orgs/Bane-NOR/packages/container/${{ env.REPO_NAME }}/versions/$PACKAGE_I
+              # https://api.github.com/orgs/Bane-NOR/packages/container/${{ env.REPO_NAME }}/versions/$PACKAGE_ID
             done
