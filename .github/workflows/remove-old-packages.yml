@@ -50,7 +50,10 @@ jobs:
           env:
             GH_TOKEN: ${{ steps.generate-token.outputs.token }}
             REPO_NAME: ${{ env.REPO_NAME }}
+            PACKAGE_IDS: ${{ env.PACKAGE_IDS }}
           run: |
+            echo "PACKAGE_IDS=${{ env.PACKAGE_IDS }}"
+            echo "Package ids bash ${PACKAGE_IDS}"
             for PACKAGE_ID in $PACKAGE_IDS; do
               echo "Deleting package with ID: $PACKAGE_ID"
               curl -X DELETE \
