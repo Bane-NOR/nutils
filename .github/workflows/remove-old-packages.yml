@@ -47,13 +47,11 @@ jobs:
             echo "PACKAGE_IDS=${PACKAGE_IDS_COMMA}" >> $GITHUB_ENV
         
         - name: delete-package-action
-          if: env.PACKAGE_IDS != ''
+          if: env.PACKAGE_IDS.length > 1
           uses: actions/delete-package-versions@v5
           with:
             package-type: container
             package-name: ${{ env.REPO_NAME }}
             package-version-ids: ${{ env.PACKAGE_IDS }}
-            ignore-versions: ".+"
+            delete-only-untagged-versions: true
 
-          env:
-            GH_TOKEN: ${{ steps.generate-token.outputs.token }}
