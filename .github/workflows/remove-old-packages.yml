@@ -46,7 +46,7 @@ jobs:
               https://api.github.com/orgs/Bane-NOR/packages/container/${{ env.REPO_NAME }}/versions?per_page=100 \
             | jq -r ".[] | select(.created_at < \"$DATE_90_DAYS_AGO\") | .id" | xargs)
             PACKAGE_IDS_COMMA=$(echo $PACKAGE_IDS | tr ' ' ',')
-            COUNT=$(echo $PACKAGE_IDS | wc -w)
+            COUNT=$(echo $PACKAGE_IDS_COMMA | wc -w)
             echo "PACKAGE_IDS=${PACKAGE_IDS_COMMA}" >> $GITHUB_ENV
             echo "count=$COUNT" >> $GITHUB_OUTPUT
         
