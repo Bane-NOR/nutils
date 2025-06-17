@@ -46,10 +46,12 @@ jobs:
               https://api.github.com/orgs/Bane-NOR/packages/container/${{ env.REPO_NAME }}/versions?per_page=100 \
             | jq -r ".[] | select(.created_at < \"$DATE_90_DAYS_AGO\") | .id" | xargs)
             PACKAGE_IDS_COMMA=$(echo $PACKAGE_IDS | tr ' ' ',')
+            COUNT=$(echo $PACKAGE_IDS | wc -w)
             echo "PACKAGE_IDS=${PACKAGE_IDS_COMMA}" >> $GITHUB_ENV
+            echo "count=$COUNT" >> $GITHUB_OUTPUT
         
         - name: delete-package-action
-          if: env.PACKAGE_IDS.length > 1
+          if: steps.old-packages.outputs.count > 1
           uses: actions/delete-package-versions@v5
           with:
             package-type: container
