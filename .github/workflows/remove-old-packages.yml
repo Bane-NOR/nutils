@@ -1,8 +1,9 @@
 name: Delete Old Packages
 on:
-  workflow_dispatch:
-  push:
-    branches: ["feat/delete-old-packages"]
+  workflow_run:
+    workflows: ["Container Build"]
+    types:
+      - completed
 
 permissions:
   packages: write
