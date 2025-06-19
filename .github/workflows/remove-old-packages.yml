@@ -58,8 +58,9 @@ jobs:
               }
             }
             # Remove trailing comma from packageID
-            $packageID = $packageID.TrimEnd(',')
-
+            if ($count -gt 1) {
+              $packageID = $packageID.TrimEnd(',')
+            }
             # Set environment variables for delete action
             "PACKAGE_IDS=$packageID" | Out-File -FilePath $env:GITHUB_ENV -Append
             "COUNT=$count" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
